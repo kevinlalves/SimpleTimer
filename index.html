@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <tittle>Timer</tittle>
+        <style>
+            input {
+                margin: 4px;
+            }
+            body {
+                margin: 100px 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: black;
+            }
+            button {
+                border: none;
+                border-radius: 12px;
+                margin: 4px;
+                padding: 6px 12px;
+            }
+            h1 {
+                color: white;
+                font-size: 128px;
+            }
+            button:hover {
+                cursor: pointer;
+            }
+            .start:hover {
+                background-color: rgb(235, 176, 217);
+                box-shadow: 3px 2px;
+            }
+            .start {
+                box-shadow: 2px 1px;
+                background-color: rgb(221, 54, 171);
+                color: white;
+            }
+            .stop {
+                background-color: rgb(235, 176, 217);
+            }
+            .stop:hover {
+                background-color: rgb(221, 54, 171);
+            }
+        </style>
+    </head>
+    <body>
+        <script async>
+            const second = 1000;
+            const minute = 60 * second;
+            const hour = 60 * minute;
+            const day = 24 * hour;
+            let now, endDate, timeInterval;
+            let seconds, minutes, hours, days;
+            let intervalId;
+
+            if (endDate = localStorage.getItem("timer")) {
+                intervalId = setInterval(updateClock, 1000);
+            }
+
+            function startClock() {
+                endDate = new Date(document.querySelector("input").value).getTime();
+                localStorage.setItem("timer", endDate);
+                if (intervalId)
+                    clearInterval(intervalId);
+
+                intervalId = setInterval(updateClock, 1000);
+            }
+
+            function updateClock() {
+                now = new Date().getTime();
+                timeInterval = endDate-now; 
+                days = Math.floor(timeInterval/day);
+                hours = Math.floor((timeInterval%day)/hour);
+                minutes = Math.floor((timeInterval%hour)/minute);
+                seconds = Math.floor((timeInterval%minute)/second);
+                document.querySelector("h1").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            function stopClock() {
+                localStorage.removeItem("timer");
+                document.querySelector("h1").innerHTML = "🤔";
+                clearInterval(intervalId);
+            }
+
+        </script>
+        <div>
+            <input type="date" value="2023-01-01" />
+            <button class="start" onclick="startClock()">Start</button>
+            <button class="stop" onclick="stopClock()">Stop</button>
+        </div>
+        <div>
+            <h1>🤔</h1>
+        </div>
+    </body>
+</html>
